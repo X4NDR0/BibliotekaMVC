@@ -1,0 +1,38 @@
+﻿@model Biblioteka.Models.Genre;
+@{
+    Layout = null;
+}
+<html>
+
+    <head>
+        <title>Biblioteka</title>
+    </head>
+
+
+
+    <body>
+        @using(Html.BeginForm("AddGenre","Home",FormMethod.Post))
+        {
+        <table border="1">
+
+         <tr>
+             <th colspan="2">Add new genre</th>
+         </tr>
+
+         <tr>
+             <th>Name of genre:</th>
+             <td>@Html.TextBox("newGenreName")</td>
+         </tr>
+
+         <tr>
+             <th colspan="2">
+                <button name="submit">Add genre</button>
+             </th>
+         </tr>
+
+        </table>
+        }
+    </body>
+
+
+</html>

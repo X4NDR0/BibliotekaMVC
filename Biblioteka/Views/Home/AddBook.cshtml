@@ -1,0 +1,77 @@
+﻿@using Biblioteka.Models;
+@model Biblioteka.ViewModels.AddBookViewModel;
+@{
+    Layout = null;
+}
+<html>
+
+    <head>
+        <title>Biblioteka</title>
+    </head>
+
+
+
+    <body>
+        @using(Html.BeginForm("AddBook","Home",FormMethod.Post))
+        {
+        <table border="1">
+
+         <tr>
+             <th colspan="2">Add new book</th>
+         </tr>
+
+         <tr>
+             <th>Name of book:</th>
+             <td>@Html.TextBoxFor(x => x.Book.Name)</td>
+         </tr>
+
+         <tr>
+             <th>Price of book:</th>
+             <td>@Html.TextBoxFor(x => x.Book.Price)</td>
+         </tr>
+
+         <tr>
+             <th>Genre of book:</th>
+             <td>
+                    @{
+                        List<SelectListItem> genres = new List<SelectListItem>();
+                        foreach(Genre genre in Model.Genres)
+                        {
+                            SelectListItem item = new SelectListItem { Text = genre.Name,Value = genre.Name };
+                            genres.Add(item);   
+                        }
+
+                    }
+                    @Html.DropDownList("genreName", genres)
+             </td>
+         </tr>
+
+         <tr>
+
+             <th>Bookstore:</th>
+             <td>
+                    @{
+                        List<SelectListItem> bookStores = new List<SelectListItem>();
+                        foreach(Bookstore bookstore in Model.BookStores)
+                        {
+                            SelectListItem item = new SelectListItem { Text = bookstore.Name,Value = bookstore.Name };
+                            bookStores.Add(item);   
+                        }
+
+                    }
+                    @Html.DropDownList("bookStoreName", bookStores)
+             </td>
+         </tr>
+
+         <tr>
+             <th colspan="2">
+                <button name="submit">Add book</button>
+             </th>
+         </tr>
+
+        </table>
+        }
+    </body>
+
+
+</html>

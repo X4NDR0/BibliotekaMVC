@@ -1,0 +1,58 @@
+﻿@using Biblioteka.Models;
+@model Biblioteka.ViewModels.SortBooksByGenreViewModel;
+
+@{
+    Layout = null;
+}
+
+<html>
+
+<head>
+</head>
+
+<body>
+    @using(Html.BeginForm("SortBooksByGenre","Home",FormMethod.Post))
+    {
+        List<SelectListItem> genreList = new List<SelectListItem>();
+
+        foreach(Genre genres in Model.GenreList)
+        {
+            SelectListItem genre = new SelectListItem { Text = genres.Name,Value = genres.Name};
+            genreList.Add(genre);
+        }
+        @Html.DropDownList("genreName",genreList);
+
+    <button name="submit">Submit</button>   
+    }
+
+    <table border="1">
+
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Price</td>
+            <td>Genre</td>
+        </tr>
+
+        @foreach (Book book in Model.Books)
+        {
+            @if (book.Deleted.Equals("false"))
+            {
+                <tr>
+                    <td>@book.Id</td>
+                    <td>@book.Name</td>
+                    <td>@book.Price.ToString("0.00")</td>
+                    <td>@book.Genre.Name</td>
+                    <td>@Html.ActionLink("Delete","RemoveBook","Home",new {id = book.Id})</td>
+                    <td>@Html.ActionLink("Edit","EditBook","Home",new {id = book.Id})</td>
+                </tr>
+            }
+        }
+    </table>
+  
+
+    @Html.ActionLink("Home Page","Index")
+
+</body>
+
+</html>

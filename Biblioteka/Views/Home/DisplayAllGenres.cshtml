@@ -1,0 +1,39 @@
+﻿@using Biblioteka.Models;
+
+@{
+    Layout = null;
+}
+
+<html>
+
+<head>
+</head>
+
+<body>
+    <table border="1">
+
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+        </tr>
+
+        @foreach (Genre genre in Model)
+        {
+            @if(genre.Deleted.Equals("false"))
+            {
+                 <tr>
+                    <td>@genre.Id</td>
+                    <td>@genre.Name</td>
+                    <td>@Html.ActionLink("Delete","RemoveGenre","Home",new {id = genre.Id})</td>
+                    <td>@Html.ActionLink("Edit","EditGenre","Home",new {id = genre.Id})</td>
+                </tr>   
+            }
+        }
+    </table>
+  
+
+    @Html.ActionLink("Home Page","Index")
+
+</body>
+
+</html>

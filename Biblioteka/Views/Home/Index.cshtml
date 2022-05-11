@@ -1,0 +1,55 @@
+﻿@model Biblioteka.Models.Bookstore;
+@{
+    Layout = null;
+}
+<html>
+
+    <head>
+        <title>Biblioteka</title>
+    </head>
+
+
+
+    <body>
+        @using(Html.BeginForm("Index","Home",FormMethod.Post))
+        {
+        <table border="1">
+
+         <tr>
+             <th colspan="2">Biblioteka</th>
+         </tr>
+
+         <tr>
+             <th>Name of bookstore:</th>
+             <td>@Html.TextBoxFor(m => m.Name)</td>
+         </tr>
+
+         <tr>
+             <th colspan="2">
+                <button name="submit">Add bookstore</button>
+             </th>
+         </tr>
+
+        </table>
+        }
+        
+        @Html.ActionLink("Display all bookstores","DisplayBookstores")
+        <b>||</b>
+        @Html.ActionLink("Display all books","DisplayAllBooks")
+        <br />
+        @Html.ActionLink("Add Books","AddBook")
+        <b>||</b>
+        @Html.ActionLink("Display deleted books","DisplayDeletedBooks")
+        <br /> 
+        @Html.ActionLink("Display all genres","DisplayAllGenres")
+        <b>||</b>
+        @Html.ActionLink("Display deleted genres","DisplayDeletedGenres")
+        <br />
+        @Html.ActionLink("Sort books by genre","SortBooksByGenre")
+        <br />
+        @Html.ActionLink("Add Genre","AddGenre")
+
+    </body>
+
+
+</html>

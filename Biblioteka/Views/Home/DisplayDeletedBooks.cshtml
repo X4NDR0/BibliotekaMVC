@@ -1,0 +1,41 @@
+﻿@using Biblioteka.Models;
+
+@{
+    Layout = null;
+}
+
+<html>
+
+<head>
+</head>
+
+<body>
+    <table border="1">
+
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Price</td>
+            <td>Genre</td>
+        </tr>
+
+        @foreach (Book book in Model)
+        {
+            @if (book.Deleted.Equals("true"))
+            {
+                <tr>
+                    <td>@book.Id</td>
+                    <td>@book.Name</td>
+                    <td>@book.Price.ToString("0.00")</td>
+                    <td>@book.Genre.Name</td>
+                </tr>
+            }
+        }
+    </table>
+  
+
+    @Html.ActionLink("Home Page","Index")
+
+</body>
+
+</html>

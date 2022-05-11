@@ -1,0 +1,64 @@
+﻿@using Biblioteka.Models;
+@model Biblioteka.Models.EditViewModel;
+
+@{
+    Layout = null;
+}
+
+<html>
+
+<head>
+</head>
+
+<body>
+    <table border="1">
+
+        @using(Html.BeginForm("EditBook","Home",FormMethod.Post))
+        {
+            <table border="1">
+
+         <tr>
+             <th colspan="2">Edit book:@Model.Book.Name</th>
+         </tr>
+
+         <tr>
+             <th>Name of the book:</th>
+             <td>@Html.TextBoxFor(file => file.Book.Name)</td>
+           
+         </tr>
+
+         <tr>
+             <th>Price of the book:</th>
+             <td>@Html.TextBoxFor(file => file.Book.Price)</td>
+         </tr>
+
+         <tr>
+             <th>Genre of the book:</th>
+                    @{
+                        List<SelectListItem> genre = new List<SelectListItem>();
+                        foreach(Genre genres in Model.Genres)
+                        {
+                            SelectListItem item = new SelectListItem {Text=genres.Name,Value=genres.Name };
+                            genre.Add(item);
+                        }
+                     }
+
+                    <td>@Html.DropDownList("genreName", genre)</td>
+             </tr>
+                    @Html.HiddenFor(m => m.Book.Id,Model.Book.Id)
+                    @Html.HiddenFor(m => m.Book.Deleted,"false")
+                <tr>
+
+             <th colspan="2">
+                <button name="submit">Edit book</button>
+             </th>
+         </tr>
+     
+    </table>
+        }
+
+    @Html.ActionLink("Home Page","Index")
+
+</body>
+
+</html>

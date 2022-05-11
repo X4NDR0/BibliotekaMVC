@@ -1,0 +1,57 @@
+﻿@using Biblioteka.Models;
+
+@{
+    Layout = null;
+}
+
+<html>
+
+<head>
+</head>
+
+<body>
+
+    @using(Html.BeginForm("DisplayAllBooks","Home",FormMethod.Post))
+    {
+         <select name="sortOption" id="options">
+            <option value="1">Nazivu rastuce</option>
+            <option value="2">Nazivu opadajuce</option>
+            <option value="3">Ceni rastuce</option>
+            <option value="4">Ceni opadajuce</option>
+    </select>
+
+
+    <button name="submit">Submit</button>   
+    }
+
+    <table border="1">
+
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Price</td>
+            <td>Genre</td>
+        </tr>
+
+        @foreach (Book book in Model)
+        {
+            @if (book.Deleted.Equals("false"))
+            {
+                <tr>
+                    <td>@book.Id</td>
+                    <td>@book.Name</td>
+                    <td>@book.Price.ToString("0.00")</td>
+                    <td>@book.Genre.Name</td>
+                    <td>@Html.ActionLink("Delete","RemoveBook","Home",new {id = book.Id})</td>
+                    <td>@Html.ActionLink("Edit","EditBook","Home",new {id = book.Id})</td>
+                </tr>
+            }
+        }
+    </table>
+  
+
+    @Html.ActionLink("Home Page","Index")
+
+</body>
+
+</html>
