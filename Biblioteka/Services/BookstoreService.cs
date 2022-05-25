@@ -1,10 +1,17 @@
-﻿using Biblioteka.Models;
+﻿using Biblioteka.Facades.SQL.Models;
+using Biblioteka.Facades.SQL.Contracts;
+using Biblioteka.Interfaces;
 
 namespace Biblioteka.Services
 {
-    public class BookstoreService
+    public class BookstoreService:IBookstore
     {
-        private SQLService _sqlService = new SQLService();
+        private ISqlData _sqlService;
+
+        public BookstoreService(ISqlData sqlService)
+        {
+            _sqlService = sqlService;
+        }
 
         public Bookstore FindBookstore(string bookStoreName)
         {

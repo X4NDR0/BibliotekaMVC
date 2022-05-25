@@ -1,4 +1,4 @@
-﻿@model Biblioteka.Models.Genre;
+﻿@using Biblioteka.Facades.SQL.Models;
 @{
     Layout = null;
 }
@@ -11,7 +11,7 @@
 
 
     <body>
-        @using(Html.BeginForm("AddGenre","Home",FormMethod.Post))
+        @using(Html.BeginForm("AddGenre","Genre",FormMethod.Post))
         {
         <table border="1">
 

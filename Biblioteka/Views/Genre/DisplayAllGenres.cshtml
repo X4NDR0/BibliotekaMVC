@@ -1,4 +1,4 @@
-﻿@using Biblioteka.Models;
+﻿@using Biblioteka.Facades.SQL.Models;
 
 @{
     Layout = null;
@@ -24,15 +24,15 @@
                  <tr>
                     <td>@genre.Id</td>
                     <td>@genre.Name</td>
-                    <td>@Html.ActionLink("Delete","RemoveGenre","Home",new {id = genre.Id})</td>
-                    <td>@Html.ActionLink("Edit","EditGenre","Home",new {id = genre.Id})</td>
+                    <td>@Html.ActionLink("Delete","RemoveGenre","Genre",new {id = genre.Id})</td>
+                    <td>@Html.ActionLink("Edit","EditGenre","Genre",new {id = genre.Id})</td>
                 </tr>   
             }
         }
     </table>
   
 
-    @Html.ActionLink("Home Page","Index")
+    @Html.ActionLink("Home Page","Index","Bookstore")
 
 </body>
 

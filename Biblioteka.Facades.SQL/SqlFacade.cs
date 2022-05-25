@@ -1,12 +1,13 @@
-﻿using Biblioteka.Models;
+﻿using Biblioteka.Facades.SQL.Contracts;
+using Biblioteka.Facades.SQL.Models;
 using System.Data.SqlClient;
 
-namespace Biblioteka.Services
+namespace Biblioteka.Facades.SQL
 {
-    public class SQLService
+    public class SqlFacade:ISqlData
     {
-        private GenreService _genreService = new GenreService();
         private string _connectionString = "Data Source=DESKTOP-QS7CCGF\\SQLEXPRESS;Initial Catalog=Biblioteka;Integrated Security=true";
+
         public List<Genre> GetAllGenres()
         {
             using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
@@ -36,7 +37,8 @@ namespace Biblioteka.Services
         {
             using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
             {
-                Genre genre = _genreService.FindGenre(genreName);
+                List<Genre> genreList = GetAllGenres();
+                Genre genre = genreList.Where(x => x.Name == genreName).FirstOrDefault();
                 book.Genre = genre;
                 sqlConnection.Open();
                 string command = "update dbo.Books set bookName=@bookName,price=@price,genre=@genre,deleted=@deleted where id=@id";
@@ -89,28 +91,32 @@ namespace Biblioteka.Services
             }
         }
 
-        public void AddBookstore(string name)
+        public int AddBookstore(string name)
         {
             using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
             {
+                int id = 0;
                 sqlConnection.Open();
-                string command = "insert into dbo.Bookstore(bookStoreName) values (@bookStoreName)";
+                string command = "insert into dbo.Bookstore(bookStoreName) values (@bookStoreName) SELECT Scope_Identity()";
                 SqlCommand cmd = new SqlCommand(command, sqlConnection);
                 cmd.Parameters.AddWithValue("@bookStoreName", name);
-                cmd.ExecuteNonQuery();
+                id = Convert.ToInt32(cmd.ExecuteScalar());
+                return id;
             }
         }
 
-        public void AddGenreToSql(Genre genre)
+        public int AddGenreToSql(Genre genre)
         {
             using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
             {
+                int id = 0;
                 sqlConnection.Open();
-                string command = "insert into dbo.Genres(genreName,deleted) values (@genreName,@deleted)";
+                string command = "insert into dbo.Genres(genreName,deleted) values (@genreName,@deleted) SELECT SCOPE_IDENTITY()";
                 SqlCommand cmd = new SqlCommand(command, sqlConnection);
                 cmd.Parameters.AddWithValue("@genreName", genre.Name);
                 cmd.Parameters.AddWithValue("@deleted", "false");
-                cmd.ExecuteNonQuery();
+                id = Convert.ToInt32(cmd.ExecuteScalar());
+                return id;
             }
         }
 
@@ -132,7 +138,8 @@ namespace Biblioteka.Services
                         string bookName = reader["bookName"].ToString();
                         decimal.TryParse(reader["price"].ToString(), out decimal price);
                         string genre = reader["genre"].ToString();
-                        Genre genreFind = _genreService.FindGenre(genre);
+                        List<Genre> genreList = GetAllGenres();
+                        Genre genreFind = genreList.Where(x => x.Name == genre).FirstOrDefault();
                         string deleted = reader["deleted"].ToString();
                         book = new Book { Id = id, Name = bookName, Price = price, Genre = genreFind, Deleted = deleted };
                     }
@@ -223,7 +230,9 @@ namespace Biblioteka.Services
                         decimal price = decimal.Parse(reader["price"].ToString());
                         string genre = reader["genre"].ToString();
                         string deleted = reader["deleted"].ToString();
-                        Book book = new Book { Id = id, Name = name, Price = price, Genre = _genreService.FindGenre(genre), Deleted = deleted };
+                        List<Genre> genreList = GetAllGenres();
+                        Genre genreFind = genreList.Where(x => x.Name == genre).FirstOrDefault();
+                        Book book = new Book { Id = id, Name = name, Price = price, Genre = genreFind, Deleted = deleted };
                         bookList.Add(book);
                     }
                 }
@@ -231,22 +240,26 @@ namespace Biblioteka.Services
             }
         }
 
-        public void AddBook(Book book, Bookstore bookstore)
+        public int AddBook(Book book, Bookstore bookstore)
         {
+            int id = 0;
             using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
             {
                 sqlConnection.Open();
-                string command = "insert into dbo.Books(bookName,price,genre,deleted,bookStoreID) values (@bookName,@price,@genre,@deleted,@bookStoreID)";
+                string command = "insert into dbo.Books(bookName,price,genre,deleted,bookStoreID) values (@bookName,@price,@genre,@deleted,@bookStoreID) SELECT SCOPE_IDENTITY()";
                 SqlCommand cmd = new SqlCommand(command, sqlConnection);
                 cmd.Parameters.AddWithValue("@bookName", book.Name);
                 cmd.Parameters.AddWithValue("@price", book.Price);
                 cmd.Parameters.AddWithValue("@genre", book.Genre.Name);
                 cmd.Parameters.AddWithValue("@deleted", "false");
                 cmd.Parameters.AddWithValue("@bookStoreID", book.Bookstore.Id);
-                cmd.ExecuteNonQuery();
+                
+                id = Convert.ToInt32(cmd.ExecuteScalar());
             }
+            
             bookstore.Books.Add(book);
             UpdateBookstore(bookstore);
+            return id;
         }
 
         public void UpdateBookstore(Bookstore bookstore)

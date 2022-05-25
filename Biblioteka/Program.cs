@@ -1,7 +1,16 @@
+using Biblioteka.Interfaces;
+using Biblioteka.Services;
+using Biblioteka.Facades.SQL.Contracts;
+using Biblioteka.Facades.SQL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ISqlData,SqlFacade>();
+builder.Services.AddScoped<IBookstore,BookstoreService>();
+builder.Services.AddScoped<IBook,BookService>();
+builder.Services.AddScoped<IGenre,GenreService>();
 
 var app = builder.Build();
 
@@ -15,13 +24,15 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "Default",
-    pattern: "{controller=Bookstore}/{action=Index}/{id?}");
-
+//app.MapControllerRoute(
+//    name: "Default",
+//    pattern: "{controller=Bookstore}/{action=Bookstore/Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 app.Run();

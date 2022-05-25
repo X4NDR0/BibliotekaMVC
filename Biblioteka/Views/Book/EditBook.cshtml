@@ -1,5 +1,5 @@
-﻿@using Biblioteka.Models;
-@model Biblioteka.Models.EditViewModel;
+﻿@using Biblioteka.Facades.SQL.Models;
+@model Biblioteka.ViewModels.EditViewModel;
 
 @{
     Layout = null;
@@ -13,7 +13,7 @@
 <body>
     <table border="1">
 
-        @using(Html.BeginForm("EditBook","Home",FormMethod.Post))
+        @using(Html.BeginForm("EditBook","Book",FormMethod.Post))
         {
             <table border="1">
 
@@ -57,7 +57,7 @@
     </table>
         }
 
-    @Html.ActionLink("Home Page","Index")
+    @Html.ActionLink("Home Page","Index","Bookstore")
 
 </body>
 

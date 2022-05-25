@@ -1,4 +1,5 @@
-﻿namespace Biblioteka.Models
+﻿using Biblioteka.Facades.SQL.Models;
+namespace Biblioteka.ViewModels
 {
     public class EditViewModel
     {

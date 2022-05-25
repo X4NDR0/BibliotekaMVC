@@ -1,4 +1,4 @@
-﻿namespace Biblioteka.Models
+﻿namespace Biblioteka.Facades.SQL.Models
 {
     public class Book
     {

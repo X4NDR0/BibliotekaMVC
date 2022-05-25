@@ -1,17 +1,24 @@
-﻿using Biblioteka.Models;
+﻿using Biblioteka.Interfaces;
+using Biblioteka.Facades.SQL.Contracts;
+using Biblioteka.Facades.SQL.Models;
 
 namespace Biblioteka.Services
 {
-    public class GenreService
+    public class GenreService:IGenre
     {
-        private SQLService _sqlService = new SQLService();
+        private ISqlData _sqlService;
+
+        public GenreService(ISqlData sqlService)
+        {
+            _sqlService = sqlService;
+        }
+
         public Genre FindGenre(string genreName)
         {
-            List<Genre> genreList = _sqlService.GetAllGenres();
+            List<Genre> genreList = GetAllGenres();
             Genre genre = genreList.Where(x => x.Name == genreName).FirstOrDefault();
             return genre;
         }
-
         public Genre EditGenre(int id)
         {
             List<Genre> genreList = _sqlService.GetAllGenres();

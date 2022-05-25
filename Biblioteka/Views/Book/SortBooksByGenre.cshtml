@@ -1,4 +1,4 @@
-﻿@using Biblioteka.Models;
+﻿@using Biblioteka.Facades.SQL.Models;
 @model Biblioteka.ViewModels.SortBooksByGenreViewModel;
 
 @{
@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    @using(Html.BeginForm("SortBooksByGenre","Home",FormMethod.Post))
+    @using(Html.BeginForm("SortBooksByGenre","Book",FormMethod.Post))
     {
         List<SelectListItem> genreList = new List<SelectListItem>();
 
@@ -36,22 +36,22 @@
 
         @foreach (Book book in Model.Books)
         {
-            @if (book.Deleted.Equals("false"))
+            @if (book.Deleted.Equals("false") && book.Genre.Deleted.Equals("false"))
             {
                 <tr>
                     <td>@book.Id</td>
                     <td>@book.Name</td>
                     <td>@book.Price.ToString("0.00")</td>
                     <td>@book.Genre.Name</td>
-                    <td>@Html.ActionLink("Delete","RemoveBook","Home",new {id = book.Id})</td>
-                    <td>@Html.ActionLink("Edit","EditBook","Home",new {id = book.Id})</td>
+                    <td>@Html.ActionLink("Delete","RemoveBook","Book",new {id = book.Id})</td>
+                    <td>@Html.ActionLink("Edit","EditBook","Book",new {id = book.Id})</td>
                 </tr>
             }
         }
     </table>
   
 
-    @Html.ActionLink("Home Page","Index")
+    @Html.ActionLink("Home Page","Index","Bookstore")
 
 </body>
 

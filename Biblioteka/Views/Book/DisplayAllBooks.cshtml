@@ -1,4 +1,4 @@
-﻿@using Biblioteka.Models;
+﻿@using Biblioteka.Facades.SQL.Models;
 
 @{
     Layout = null;
@@ -11,7 +11,7 @@
 
 <body>
 
-    @using(Html.BeginForm("DisplayAllBooks","Home",FormMethod.Post))
+    @using(Html.BeginForm("DisplayAllBooks","Book",FormMethod.Post))
     {
          <select name="sortOption" id="options">
             <option value="1">Nazivu rastuce</option>
@@ -35,22 +35,22 @@
 
         @foreach (Book book in Model)
         {
-            @if (book.Deleted.Equals("false"))
+            @if (book.Deleted.Equals("false") && book.Genre.Deleted.Equals("false"))
             {
                 <tr>
                     <td>@book.Id</td>
                     <td>@book.Name</td>
                     <td>@book.Price.ToString("0.00")</td>
                     <td>@book.Genre.Name</td>
-                    <td>@Html.ActionLink("Delete","RemoveBook","Home",new {id = book.Id})</td>
-                    <td>@Html.ActionLink("Edit","EditBook","Home",new {id = book.Id})</td>
+                    <td>@Html.ActionLink("Delete","RemoveBook","Book",new {id = book.Id})</td>
+                    <td>@Html.ActionLink("Edit","EditBook","Book",new {id = book.Id})</td>
                 </tr>
             }
         }
     </table>
   
 
-    @Html.ActionLink("Home Page","Index")
+    @Html.ActionLink("Home Page","Index","Bookstore")
 
 </body>
 

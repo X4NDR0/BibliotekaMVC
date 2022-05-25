@@ -14,4 +14,8 @@
     <Folder Include="Views\Home\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Biblioteka.Facades.SQL\Biblioteka.Facades.SQL.csproj" />
+  </ItemGroup>
+
 </Project>

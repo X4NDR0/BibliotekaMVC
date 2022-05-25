@@ -1,14 +1,25 @@
-﻿using Biblioteka.Models;
+﻿using Biblioteka.Interfaces;
+using Biblioteka.Facades.SQL.Models;
+using Biblioteka.Facades.SQL.Contracts;
+using Biblioteka.Models;
 using Biblioteka.ViewModels;
 
 namespace Biblioteka.Services
 {
-    public class BookService
+    public class BookService:IBook
     {
-        private SQLService _sqlService = new SQLService();
-        private GenreService _genreService = new GenreService();
-        private BookstoreService _bookstoreService = new BookstoreService();
+        private ISqlData _sqlService;
+        private IGenre _genreService;
+        private IBookstore _bookstoreService;
         private int _maxBookID;
+
+        public BookService(ISqlData sqlService, IGenre genreService, IBookstore bookstoreService)
+        {
+            _sqlService = sqlService;
+            _genreService = genreService;
+            _bookstoreService = bookstoreService;
+        }
+
         public List<Book> SortBooksByNameAscending()
         {
             List<Book> allBooks = _sqlService.GetBooks();

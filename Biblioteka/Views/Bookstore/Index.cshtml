@@ -1,4 +1,5 @@
-﻿@model Biblioteka.Models.Bookstore;
+﻿@using Biblioteka.Facades.SQL.Models;
+@model Biblioteka.Facades.SQL.Models.Bookstore
 @{
     Layout = null;
 }
@@ -35,19 +36,19 @@
         
         @Html.ActionLink("Display all bookstores","DisplayBookstores")
         <b>||</b>
-        @Html.ActionLink("Display all books","DisplayAllBooks")
+        @Html.ActionLink("Display all books","DisplayAllBooks","Book")
         <br />
-        @Html.ActionLink("Add Books","AddBook")
+        @Html.ActionLink("Add Books","AddBook","Book")
         <b>||</b>
-        @Html.ActionLink("Display deleted books","DisplayDeletedBooks")
+        @Html.ActionLink("Display deleted books","DisplayDeletedBooks","Book")
         <br /> 
-        @Html.ActionLink("Display all genres","DisplayAllGenres")
+        @Html.ActionLink("Display all genres","DisplayAllGenres","Genre")
         <b>||</b>
-        @Html.ActionLink("Display deleted genres","DisplayDeletedGenres")
+        @Html.ActionLink("Display deleted genres","DisplayDeletedGenres","Genre")
         <br />
-        @Html.ActionLink("Sort books by genre","SortBooksByGenre")
+        @Html.ActionLink("Sort books by genre","SortBooksByGenre","Book")
         <br />
-        @Html.ActionLink("Add Genre","AddGenre")
+        @Html.ActionLink("Add Genre","AddGenre","Genre")
 
     </body>
 
