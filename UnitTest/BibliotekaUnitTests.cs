@@ -26,8 +26,8 @@ namespace BibliotekaUnitTests
         {
             //Arrange
             Genre genre = new Genre { Name = "ImeZanra" };
-            Book book = new Book { Name = "ImeKnjige" };
-            Bookstore bookstore = new Bookstore { Name = "ImeKnjizare" };
+            Bookstore bookstore = new Bookstore { Id = 1, Name = "ImeKnjizare" };
+            Book book = new Book { Name = "ImeKnjige", Genre = genre, Bookstore = bookstore };
             SqlFacade sqlFacade = new SqlFacade();
             int id = sqlFacade.AddBook(book, bookstore);
             book = new Book { Name = "EditedWithUnitTest" };
@@ -84,19 +84,20 @@ namespace BibliotekaUnitTests
         public void RemoveBook()
         {
             //Arrange
-            Book book = new Book { Name = "ImeKnjige" };
-            Bookstore bookstore = new Bookstore { Name = "ImeKnjizare" };
+            Genre genre = new Genre { Name = "ImeZanra" };
+            Bookstore bookstore = new Bookstore { Id = 1, Name = "ImeKnjizare" };
+            Book book = new Book { Name = "ImeKnjige", Genre = genre, Bookstore = bookstore };
             SqlFacade sqlFacade = new SqlFacade();
             int id = sqlFacade.AddBook(book, bookstore);
             Book result = new Book();
-            List<Book> bookList = new List<Book>();
+            List<Book> bookList = sqlFacade.GetBooks();
 
             //Act
             sqlFacade.RemoveBook(id);
             result = bookList.Where(x => x.Id == id).FirstOrDefault();
 
             //Assert
-            Assert.AreEqual(result.Deleted, "true");
+            Assert.AreSame("true", result.Deleted);
         }
 
         [Test]
@@ -124,7 +125,7 @@ namespace BibliotekaUnitTests
             SqlFacade sqlFacade = new SqlFacade();
             int id = sqlFacade.AddGenreToSql(genre);
             Genre result = new Genre();
-            List<Genre> genreList = new List<Genre>();
+            List<Genre> genreList = sqlFacade.GetAllGenres();
 
             //Act
             result = genreList.Where(x => x.Id == id).FirstOrDefault();
@@ -187,8 +188,9 @@ namespace BibliotekaUnitTests
         public void AddBook()
         {
             //Arrange
-            Book book = new Book { Name = "ImeKnjige" };
-            Bookstore bookstore = new Bookstore { Name = "ImeKnjizare" };
+            Genre genre = new Genre { Name = "ImeZanra" };
+            Bookstore bookstore = new Bookstore { Id = 1, Name = "ImeKnjizare" };
+            Book book = new Book { Name = "ImeKnjige", Genre = genre, Bookstore = bookstore };
             SqlFacade sqlFacade = new SqlFacade();
             int id = sqlFacade.AddBook(book, bookstore);
             Book result = new Book();
