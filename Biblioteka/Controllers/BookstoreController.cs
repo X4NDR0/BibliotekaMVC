@@ -1,14 +1,14 @@
-﻿using Biblioteka.Services;
-using Biblioteka.Facades.SQL.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Biblioteka.Facades.SQL.Models;
 using Biblioteka.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Biblioteka.Controllers
 {
     public class BookstoreController : Controller
     {
-        private IBookstore _bookstoreService;
-        public BookstoreController(IBookstore IBookstore)
+        private IBookstoreService _bookstoreService;
+        public BookstoreController(IBookstoreService IBookstore)
         {
             _bookstoreService = IBookstore;
         }
@@ -17,7 +17,7 @@ namespace Biblioteka.Controllers
         [Route("Bookstore/Index")]
         public IActionResult Index()
         {
-           return View();
+            return View();
         }
 
         [HttpPost]

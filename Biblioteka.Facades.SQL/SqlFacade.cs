@@ -1,10 +1,13 @@
 ﻿using Biblioteka.Facades.SQL.Contracts;
 using Biblioteka.Facades.SQL.Models;
+using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace Biblioteka.Facades.SQL
 {
-    public class SqlFacade:ISqlData
+    public class SqlFacade : ISqlFacade
     {
         private string _connectionString = "Data Source=DESKTOP-QS7CCGF\\SQLEXPRESS;Initial Catalog=Biblioteka;Integrated Security=true";
 
@@ -253,10 +256,10 @@ namespace Biblioteka.Facades.SQL
                 cmd.Parameters.AddWithValue("@genre", book.Genre.Name);
                 cmd.Parameters.AddWithValue("@deleted", "false");
                 cmd.Parameters.AddWithValue("@bookStoreID", book.Bookstore.Id);
-                
+
                 id = Convert.ToInt32(cmd.ExecuteScalar());
             }
-            
+
             bookstore.Books.Add(book);
             UpdateBookstore(bookstore);
             return id;

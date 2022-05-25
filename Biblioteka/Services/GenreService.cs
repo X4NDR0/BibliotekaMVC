@@ -1,14 +1,16 @@
-﻿using Biblioteka.Interfaces;
-using Biblioteka.Facades.SQL.Contracts;
+﻿using Biblioteka.Facades.SQL.Contracts;
 using Biblioteka.Facades.SQL.Models;
+using Biblioteka.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Biblioteka.Services
 {
-    public class GenreService:IGenre
+    public class GenreService : IGenreService
     {
-        private ISqlData _sqlService;
+        private ISqlFacade _sqlService;
 
-        public GenreService(ISqlData sqlService)
+        public GenreService(ISqlFacade sqlService)
         {
             _sqlService = sqlService;
         }

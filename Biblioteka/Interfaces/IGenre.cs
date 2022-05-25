@@ -1,8 +1,9 @@
 ﻿using Biblioteka.Facades.SQL.Models;
+using System.Collections.Generic;
 
 namespace Biblioteka.Interfaces
 {
-    public interface IGenre
+    public interface IGenreService
     {
         public Genre EditGenre(int id);
         public Genre FindGenre(string genreName);

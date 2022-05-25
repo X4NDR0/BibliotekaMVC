@@ -1,14 +1,15 @@
-﻿using Biblioteka.Interfaces;
-using Biblioteka.Facades.SQL.Models;
+﻿using Biblioteka.Facades.SQL.Models;
+using Biblioteka.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Biblioteka.Controllers
 {
     public class GenreController : Controller
     {
-        private IGenre _genreService;
+        private IGenreService _genreService;
 
-        public GenreController(IGenre genreService)
+        public GenreController(IGenreService genreService)
         {
             _genreService = genreService;
         }
@@ -16,13 +17,15 @@ namespace Biblioteka.Controllers
         [Route("Genre/DisplayAllGenres")]
         public IActionResult DisplayAllGenres()
         {
+            List<Genre> genreList = _genreService.GetAllGenres();
             return View(_genreService.GetAllGenres());
         }
 
         [Route("Genre/DisplayDeletedGenres")]
         public IActionResult DisplayDeletedGenres()
         {
-            return View(_genreService.GetAllGenres());
+            List<Genre> genreList = _genreService.GetAllGenres();
+            return View(genreList);
         }
 
         [Route("Genre/AddGenre")]
@@ -42,7 +45,8 @@ namespace Biblioteka.Controllers
         [Route("Genre/EditGenre/{id}")]
         public IActionResult EditGenre(int id)
         {
-            return View(_genreService.EditGenre(id));
+            Genre genre = _genreService.EditGenre(id);
+            return View(genre);
         }
 
         [HttpPost]

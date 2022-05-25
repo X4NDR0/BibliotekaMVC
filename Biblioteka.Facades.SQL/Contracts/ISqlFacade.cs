@@ -1,8 +1,9 @@
 ﻿using Biblioteka.Facades.SQL.Models;
+using System.Collections.Generic;
 
 namespace Biblioteka.Facades.SQL.Contracts
 {
-    public interface ISqlData
+    public interface ISqlFacade
     {
         public List<Genre> GetAllGenres();
         public void EditBook(Book book, string genreName);

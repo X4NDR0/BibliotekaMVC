@@ -1,4 +1,6 @@
-﻿namespace Biblioteka.Facades.SQL.Models
+﻿using System.Collections.Generic;
+
+namespace Biblioteka.Facades.SQL.Models
 {
     public class Genre
     {

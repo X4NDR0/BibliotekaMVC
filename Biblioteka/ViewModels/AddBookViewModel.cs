@@ -1,4 +1,6 @@
 ﻿using Biblioteka.Facades.SQL.Models;
+using System.Collections.Generic;
+
 namespace Biblioteka.ViewModels
 {
     public class AddBookViewModel

@@ -1,16 +1,17 @@
-﻿using Biblioteka.Interfaces;
-using Biblioteka.Facades.SQL.Models;
-using Biblioteka.Services;
+﻿using Biblioteka.Facades.SQL.Models;
+using Biblioteka.Interfaces;
+using Biblioteka.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Biblioteka.Controllers
 {
 
     public class BookController : Controller
     {
-        private IBook _bookService;
+        private IBookService _bookService;
 
-        public BookController(IBook bookService)
+        public BookController(IBookService bookService)
         {
             _bookService = bookService;
         }
@@ -20,38 +21,42 @@ namespace Biblioteka.Controllers
         public IActionResult AddBook(Book book, string genreName, string bookStoreName)
         {
             _bookService.AddBook(book, genreName, bookStoreName);
-            return RedirectToAction("DisplayAllBooks","Book");
+            return RedirectToAction("DisplayAllBooks", "Book");
         }
 
         [Route("Book/RemoveBook/{id}")]
         public IActionResult RemoveBook(int id)
         {
             _bookService.RemoveBook(id);
-            return RedirectToAction("DisplayDeletedBooks","Book");
+            return RedirectToAction("DisplayDeletedBooks", "Book");
         }
 
         [Route("Book/AddBook")]
         public IActionResult AddBook()
         {
-            return View(_bookService.AddBook());
+            AddBookViewModel addBook = _bookService.AddBook();
+            return View(addBook);
         }
 
         [Route("Book/DisplayAllBooks")]
         public IActionResult DisplayAllBooks()
         {
-            return View(_bookService.GetBooks());
+            List<Book> bookList = new List<Book>();
+            return View(bookList);
         }
 
         [Route("Book/DisplayDeletedBooks")]
         public IActionResult DisplayDeletedBooks()
         {
-            return View(_bookService.GetBooks());
+            List<Book> bookList = new List<Book>();
+            return View(bookList);
         }
 
         [Route("Book/EditBook/{id:int}")]
         public IActionResult EditBook(int id)
         {
-            return View(_bookService.EditBook(id));
+            EditViewModel editBook = _bookService.EditBook(id);
+            return View(editBook);
         }
 
         [HttpPost]
@@ -59,27 +64,30 @@ namespace Biblioteka.Controllers
         public IActionResult EditBook(Book book, string genreName)
         {
             _bookService.EditBook(book, genreName);
-            return RedirectToAction("DisplayAllBooks","Book");
+            return RedirectToAction("DisplayAllBooks", "Book");
         }
 
         [Route("Book/SortBooksByGenre")]
         public IActionResult SortBooksByGenre()
         {
-            return View(_bookService.SortBooksByGenre());
+            SortBooksByGenreViewModel sortBooksByGenreViewModel = _bookService.SortBooksByGenre();
+            return View(sortBooksByGenreViewModel);
         }
 
         [HttpPost]
         [Route("Book/SortBooksByGenre")]
         public IActionResult SortBooksByGenre(string genreName)
         {
-            return View(_bookService.SortBooksByGenre(genreName));
+            SortBooksByGenreViewModel sortBooksByGenreViewModel = _bookService.SortBooksByGenre(genreName);
+            return View(sortBooksByGenreViewModel);
         }
 
         [HttpPost]
         [Route("Book/DisplayAllBooks")]
         public IActionResult DisplayAllBooks(int sortOption)
         {
-            return View(_bookService.DisplayAllBooks(sortOption));
+            List<Book> bookList = _bookService.DisplayAllBooks(sortOption);
+            return View(bookList);
         }
 
     }

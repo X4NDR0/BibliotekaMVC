@@ -1,9 +1,10 @@
 ﻿using Biblioteka.Facades.SQL.Models;
 using Biblioteka.ViewModels;
+using System.Collections.Generic;
 
 namespace Biblioteka.Interfaces
 {
-    public interface IBook
+    public interface IBookService
     {
         public List<Book> SortBooksByNameAscending();
         public List<Book> SortBooksByNameDescending();

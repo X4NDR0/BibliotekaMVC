@@ -1,19 +1,20 @@
-﻿using Biblioteka.Interfaces;
+﻿using Biblioteka.Facades.SQL.Contracts;
 using Biblioteka.Facades.SQL.Models;
-using Biblioteka.Facades.SQL.Contracts;
-using Biblioteka.Models;
+using Biblioteka.Interfaces;
 using Biblioteka.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Biblioteka.Services
 {
-    public class BookService:IBook
+    public class BookService : IBookService
     {
-        private ISqlData _sqlService;
-        private IGenre _genreService;
-        private IBookstore _bookstoreService;
+        private ISqlFacade _sqlService;
+        private IGenreService _genreService;
+        private IBookstoreService _bookstoreService;
         private int _maxBookID;
 
-        public BookService(ISqlData sqlService, IGenre genreService, IBookstore bookstoreService)
+        public BookService(ISqlFacade sqlService, IGenreService genreService, IBookstoreService bookstoreService)
         {
             _sqlService = sqlService;
             _genreService = genreService;
