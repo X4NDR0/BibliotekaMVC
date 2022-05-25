@@ -1,6 +1,8 @@
 using Biblioteka.Facades.SQL;
 using Biblioteka.Facades.SQL.Models;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BibliotekaUnitTests
 {
