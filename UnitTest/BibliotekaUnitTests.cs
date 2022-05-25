@@ -1,4 +1,5 @@
 using Biblioteka.Facades.SQL;
+using Biblioteka.Facades.SQL.Contracts;
 using Biblioteka.Facades.SQL.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -8,19 +9,25 @@ namespace BibliotekaUnitTests
 {
     public class BibliotekaUnitTests
     {
+        private SqlFacade _sqlFacade;
+
+        public BibliotekaUnitTests()
+        {
+            _sqlFacade = new SqlFacade();
+        }
 
         [Test]
         public void GetAllGenres()
         {
             //Arrange
-            SqlFacade sqlFacade = new SqlFacade();
-            List<Genre> result = new List<Genre>();
+            int expectedResult = 32;
 
             //Act
-            result = sqlFacade.GetAllGenres();
+            List<Genre> result = _sqlFacade.GetAllGenres();
 
             //Assert
             Assert.IsNotNull(result);
+            Assert.AreEqual(result.Count(), expectedResult);
         }
 
         [Test]
@@ -30,14 +37,12 @@ namespace BibliotekaUnitTests
             Genre genre = new Genre { Name = "ImeZanra" };
             Bookstore bookstore = new Bookstore { Id = 1, Name = "ImeKnjizare" };
             Book book = new Book { Name = "ImeKnjige", Genre = genre, Bookstore = bookstore };
-            SqlFacade sqlFacade = new SqlFacade();
-            int id = sqlFacade.AddBook(book, bookstore);
             book = new Book { Name = "EditedWithUnitTest" };
-            Book originalBook = new Book();
-            originalBook = sqlFacade.FindBook(id);
 
             //Act
-            sqlFacade.EditBook(book, genre.Name);
+            int id = _sqlFacade.AddBook(book, bookstore);
+            Book originalBook = _sqlFacade.FindBook(id);
+            _sqlFacade.EditBook(book, genre.Name);
 
 
             //Assert
@@ -49,15 +54,14 @@ namespace BibliotekaUnitTests
         {
             //Arrange
             Genre genre = new Genre { Name = "ImeZanra" };
-            SqlFacade sqlFacade = new SqlFacade();
-            int id = sqlFacade.AddGenreToSql(genre);
+            int id = _sqlFacade.AddGenreToSql(genre);
             genre = new Genre { Name = "EditedGenreWithUT" };
             Genre originalGenre = new Genre();
-            List<Genre> genreList = sqlFacade.GetAllGenres();
+            List<Genre> genreList = _sqlFacade.GetAllGenres();
 
             //Act
             originalGenre = genreList.Where(x => x.Id == id).FirstOrDefault();
-            sqlFacade.EditGenre(genre);
+            _sqlFacade.EditGenre(genre);
 
             //Assert
             Assert.AreNotEqual(originalGenre, genre);
