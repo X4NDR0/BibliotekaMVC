@@ -11,7 +11,7 @@ namespace Biblioteka.Interfaces
         public List<Book> SortBooksByPriceAscending();
         public List<Book> SortBooksByPriceDescending();
         public List<Book> DisplayAllBooks(int sortOption);
-        public void EditBook(Book book, string genreName);
+        public void EditBookGenre(Book book,string genreName);
         public EditViewModel EditBook(int id);
         public List<Book> GetBooks();
         public AddBookViewModel AddBook();

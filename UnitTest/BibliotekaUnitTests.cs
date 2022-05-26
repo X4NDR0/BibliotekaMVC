@@ -1,5 +1,4 @@
 using Biblioteka.Facades.SQL;
-using Biblioteka.Facades.SQL.Contracts;
 using Biblioteka.Facades.SQL.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -36,17 +35,18 @@ namespace BibliotekaUnitTests
             //Arrange
             Genre genre = new Genre { Name = "ImeZanra" };
             Bookstore bookstore = new Bookstore { Id = 1, Name = "ImeKnjizare" };
-            Book book = new Book { Name = "ImeKnjige", Genre = genre, Bookstore = bookstore };
-            book = new Book { Name = "EditedWithUnitTest" };
+            Book newBook = new Book { Name = "ImeKnjige", Genre = genre, Bookstore = bookstore };
+            string nameChange = "EditedWithUnitTest";
 
             //Act
-            int id = _sqlFacade.AddBook(book, bookstore);
+            int id = _sqlFacade.AddBook(newBook, bookstore);
             Book originalBook = _sqlFacade.FindBook(id);
-            _sqlFacade.EditBook(book, genre.Name);
+            newBook.Name = nameChange;
+            _sqlFacade.EditBook(newBook);
 
 
             //Assert
-            Assert.AreNotEqual(originalBook, book);
+            Assert.AreNotEqual(originalBook.Name, newBook.Name);
         }
 
         [Test]
@@ -54,17 +54,18 @@ namespace BibliotekaUnitTests
         {
             //Arrange
             Genre genre = new Genre { Name = "ImeZanra" };
-            int id = _sqlFacade.AddGenreToSql(genre);
-            genre = new Genre { Name = "EditedGenreWithUT" };
-            Genre originalGenre = new Genre();
-            List<Genre> genreList = _sqlFacade.GetAllGenres();
+            string nameChange = "EditedGenreWithUT";
+
 
             //Act
-            originalGenre = genreList.Where(x => x.Id == id).FirstOrDefault();
+            int id = _sqlFacade.AddGenreToSql(genre);
+            List<Genre> genreList = _sqlFacade.GetAllGenres();
+            Genre originalGenre = genreList.Where(x => x.Id == id).FirstOrDefault();
+            genre.Name = nameChange;
             _sqlFacade.EditGenre(genre);
 
             //Assert
-            Assert.AreNotEqual(originalGenre, genre);
+            Assert.AreNotEqual(originalGenre.Name, genre.Name);
         }
 
         [Test]
@@ -72,18 +73,15 @@ namespace BibliotekaUnitTests
         {
             //Arrange
             Genre genre = new Genre { Name = "ImeZanra" };
-            SqlFacade sqlFacade = new SqlFacade();
-            int id = sqlFacade.AddGenreToSql(genre);
-            Genre result = new Genre();
-            List<Genre> genreList = sqlFacade.GetAllGenres();
 
             //Act
-
-            sqlFacade.RemoveGenre(id);
-            result = genreList.Where(x => x.Id == id).FirstOrDefault();
+            int id = _sqlFacade.AddGenreToSql(genre);
+            _sqlFacade.RemoveGenre(id);
+            List<Genre> genreList = _sqlFacade.GetAllGenres();
+            Genre result = genreList.Where(x => x.Id == id).FirstOrDefault();
 
             //Assert
-            Assert.AreEqual(result.Deleted, "true");
+            Assert.AreEqual("true", result.Deleted);
         }
 
         [Test]
@@ -93,31 +91,27 @@ namespace BibliotekaUnitTests
             Genre genre = new Genre { Name = "ImeZanra" };
             Bookstore bookstore = new Bookstore { Id = 1, Name = "ImeKnjizare" };
             Book book = new Book { Name = "ImeKnjige", Genre = genre, Bookstore = bookstore };
-            SqlFacade sqlFacade = new SqlFacade();
-            int id = sqlFacade.AddBook(book, bookstore);
-            Book result = new Book();
-            List<Book> bookList = sqlFacade.GetBooks();
 
             //Act
-            sqlFacade.RemoveBook(id);
-            result = bookList.Where(x => x.Id == id).FirstOrDefault();
+            int id = _sqlFacade.AddBook(book, bookstore);
+            _sqlFacade.RemoveBook(id);
+            List<Book> bookList = _sqlFacade.GetBooks();
+            Book result = bookList.Where(x => x.Id == id).FirstOrDefault();
 
             //Assert
-            Assert.AreSame("true", result.Deleted);
+            Assert.AreEqual("true", result.Deleted);
         }
 
         [Test]
         public void AddBookstore()
         {
             //Arrange
-            SqlFacade sqlFacade = new SqlFacade();
             string bookstoreName = "ImeKnjizare";
-            int id = sqlFacade.AddBookstore(bookstoreName);
-            Bookstore result = new Bookstore();
-            List<Bookstore> bookstoreList = sqlFacade.ShowBookstores();
 
             //Act
-            result = bookstoreList.Where(x => x.Id == id).FirstOrDefault();
+            int id = _sqlFacade.AddBookstore(bookstoreName);
+            List<Bookstore> bookstoreList = _sqlFacade.ShowBookstores();
+            Bookstore result = bookstoreList.Where(x => x.Id == id).FirstOrDefault();
 
             //Assert
             Assert.IsNotNull(result);
@@ -128,14 +122,12 @@ namespace BibliotekaUnitTests
         {
             //Arrange
             Genre genre = new Genre { Name = "ImeZanra" };
-            SqlFacade sqlFacade = new SqlFacade();
-            int id = sqlFacade.AddGenreToSql(genre);
-            Genre result = new Genre();
-            List<Genre> genreList = sqlFacade.GetAllGenres();
 
             //Act
-            result = genreList.Where(x => x.Id == id).FirstOrDefault();
-            sqlFacade.RemoveGenre(id);
+            int id = _sqlFacade.AddGenreToSql(genre);
+            List<Genre> genreList = _sqlFacade.GetAllGenres();
+            Genre result = genreList.Where(x => x.Id == id).FirstOrDefault();
+            _sqlFacade.RemoveGenre(id);
 
             //Assert
             Assert.IsNotNull(result);
@@ -160,11 +152,9 @@ namespace BibliotekaUnitTests
         public void ShowBookstores()
         {
             //Arrange
-            SqlFacade sqlFacade = new SqlFacade();
-            List<Bookstore> result = new List<Bookstore>();
 
             //Act
-            result = sqlFacade.ShowBookstores();
+            List<Bookstore> result = _sqlFacade.ShowBookstores();
 
             //Assert
             Assert.IsNotNull(result);
@@ -173,18 +163,23 @@ namespace BibliotekaUnitTests
         [Test]
         public void GetBookstores()
         {
+            //Arrange
+            string bookStoreName = "Vulkan";
 
+            //Act
+            List<Bookstore> bookstoreList = _sqlFacade.GetBookstores(bookStoreName);
+
+            //Arrange
+            Assert.IsNotNull(bookstoreList[0].Books);
         }
 
         [Test]
         public void GetBooks()
         {
             //Arrange
-            SqlFacade sqlFacade = new SqlFacade();
-            List<Book> result = new List<Book>();
 
             //Act
-            result = sqlFacade.GetBooks();
+            List<Book> result = _sqlFacade.GetBooks();
 
             //Assert
             Assert.IsNotNull(result);
@@ -197,14 +192,12 @@ namespace BibliotekaUnitTests
             Genre genre = new Genre { Name = "ImeZanra" };
             Bookstore bookstore = new Bookstore { Id = 1, Name = "ImeKnjizare" };
             Book book = new Book { Name = "ImeKnjige", Genre = genre, Bookstore = bookstore };
-            SqlFacade sqlFacade = new SqlFacade();
-            int id = sqlFacade.AddBook(book, bookstore);
-            Book result = new Book();
-            List<Book> bookList = sqlFacade.GetBooks();
 
             //Act
-            result = bookList.Where(x => x.Id == id).FirstOrDefault();
-            sqlFacade.RemoveBook(result.Id);
+            int id = _sqlFacade.AddBook(book, bookstore);
+            List<Book> bookList = _sqlFacade.GetBooks();
+            Book result = bookList.Where(x => x.Id == id).FirstOrDefault();
+            _sqlFacade.RemoveBook(result.Id);
 
             //Assert
             Assert.IsNotNull(result);
@@ -214,13 +207,16 @@ namespace BibliotekaUnitTests
         public void UpdateBookstore()
         {
             //Arrange
-
+            Book book = new Book { Id = 127,Name = "Test"};
+            List<Book> bookList = new List<Book>();
+            bookList.Add(book);
+            Bookstore bookstore = new Bookstore { Name = "Vulkan",Books = bookList,};
 
             //Act
-
+            Bookstore expectedResult = _sqlFacade.UpdateBookstore(bookstore);
 
             //Assert
-
+            Assert.IsTrue(expectedResult.Books.Count > 0);
         }
     }
 }

@@ -36,13 +36,10 @@ namespace Biblioteka.Facades.SQL
             }
         }
 
-        public void EditBook(Book book, string genreName)
+        public void EditBook(Book book)
         {
             using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
-            {
-                List<Genre> genreList = GetAllGenres();
-                Genre genre = genreList.Where(x => x.Name == genreName).FirstOrDefault();
-                book.Genre = genre;
+            {;
                 sqlConnection.Open();
                 string command = "update dbo.Books set bookName=@bookName,price=@price,genre=@genre,deleted=@deleted where id=@id";
                 SqlCommand cmd = new SqlCommand(command, sqlConnection);
@@ -265,13 +262,13 @@ namespace Biblioteka.Facades.SQL
             return id;
         }
 
-        public void UpdateBookstore(Bookstore bookstore)
+        public Bookstore UpdateBookstore(Bookstore bookstore)
         {
             using (SqlConnection sqlConnection = new SqlConnection(_connectionString))
             {
                 string bookIds = string.Empty;
 
-                if (bookstore.Books != null)
+                if (bookstore.Books.Count > 0)
                 {
                     foreach (Book book in bookstore.Books)
                     {
@@ -281,7 +278,8 @@ namespace Biblioteka.Facades.SQL
                 }
                 else
                 {
-                    bookIds = GetBooks().Max(x => x.Id).ToString();
+                    List<Book> bookList = GetBooks();
+                    bookIds = bookList.Max(x => x.Id).ToString();
                 }
 
                 sqlConnection.Open();
@@ -290,6 +288,8 @@ namespace Biblioteka.Facades.SQL
                 cmd.Parameters.AddWithValue("@bookIds", bookIds);
                 cmd.Parameters.AddWithValue("@id", bookstore.Id);
                 cmd.ExecuteNonQuery();
+
+                return bookstore;
             }
         }
     }

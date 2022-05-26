@@ -76,9 +76,12 @@ namespace Biblioteka.Services
             return sortedList;
         }
 
-        public void EditBook(Book book, string genreName)
+        public void EditBookGenre(Book book, string genreName)
         {
-            _sqlService.EditBook(book, genreName);
+            List<Genre> genreList = _sqlService.GetAllGenres();
+            Genre genre = genreList.Where(x => x.Name == genreName).FirstOrDefault();
+            book.Genre = genre;
+            _sqlService.EditBook(book);
         }
 
         public EditViewModel EditBook(int id)

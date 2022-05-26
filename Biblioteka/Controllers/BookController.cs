@@ -41,14 +41,14 @@ namespace Biblioteka.Controllers
         [Route("Book/DisplayAllBooks")]
         public IActionResult DisplayAllBooks()
         {
-            List<Book> bookList = new List<Book>();
+            List<Book> bookList = _bookService.GetBooks();
             return View(bookList);
         }
 
         [Route("Book/DisplayDeletedBooks")]
         public IActionResult DisplayDeletedBooks()
         {
-            List<Book> bookList = new List<Book>();
+            List<Book> bookList = _bookService.GetBooks();
             return View(bookList);
         }
 
@@ -63,7 +63,7 @@ namespace Biblioteka.Controllers
         [Route("Book/EditBook/{id:int}")]
         public IActionResult EditBook(Book book, string genreName)
         {
-            _bookService.EditBook(book, genreName);
+            _bookService.EditBookGenre(book, genreName);
             return RedirectToAction("DisplayAllBooks", "Book");
         }
 

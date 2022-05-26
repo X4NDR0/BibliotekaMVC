@@ -6,7 +6,7 @@ namespace Biblioteka.Facades.SQL.Contracts
     public interface ISqlFacade
     {
         public List<Genre> GetAllGenres();
-        public void EditBook(Book book, string genreName);
+        public void EditBook(Book book);
         public void EditGenre(Genre genre);
         public void RemoveGenre(int id);
         public void RemoveBook(int id);
@@ -17,6 +17,6 @@ namespace Biblioteka.Facades.SQL.Contracts
         public List<Bookstore> GetBookstores(string bookStoreName);
         public List<Book> GetBooks();
         public int AddBook(Book book, Bookstore bookstore);
-        public void UpdateBookstore(Bookstore bookstore);
+        public Bookstore UpdateBookstore(Bookstore bookstore);
     }
 }
