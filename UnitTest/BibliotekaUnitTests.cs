@@ -207,10 +207,10 @@ namespace BibliotekaUnitTests
         public void UpdateBookstore()
         {
             //Arrange
-            Book book = new Book { Id = 127,Name = "Test"};
+            Book book = new Book { Id = 127, Name = "Test" };
             List<Book> bookList = new List<Book>();
             bookList.Add(book);
-            Bookstore bookstore = new Bookstore { Name = "Vulkan",Books = bookList,};
+            Bookstore bookstore = new Bookstore { Name = "Vulkan", Books = bookList, };
 
             //Act
             Bookstore expectedResult = _sqlFacade.UpdateBookstore(bookstore);
